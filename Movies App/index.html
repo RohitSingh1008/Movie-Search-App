@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/buttons-1/512/Movie.png">
+    <link rel="manifest" href="data:application/manifest+json,{" name":"fullscreen="" pwa","short_name":"pwa","start_url":".="" ","display":"standalone","background_color":"#ffffff","theme_color":"#333333"}"="">
+    <title>Movies Search App | Made with 🩵 Rohit Singh</title>
+     <!-- Include Font Awesome for icons -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .main {
+            display: none;
+            background: #e0e5ec;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+            height: 180px;
+          
+          
+    
+   
+}
+        
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .box {
+            padding: 10px;
+            width: 25%;
+            flex-basis: 25%;
+            height: 400px;
+            border-radius: 5px;
+            overflow: hidden;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .box img {
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
+            background: #e0e5ec;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+        }
+
+        .box .overlay {
+            width: 100%;
+            max-height: 100%;
+            min-height: auto;
+            position: absolute;
+            bottom: -100%;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 10px 10px 0px 0px;
+            left: 0;
+            transition: 0.5s;
+            background-color: white;
+        }
+
+        .box span {
+            color: orange;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        .title {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .box:hover .overlay {
+            bottom: 0%;
+        }
+
+        .overlay h2 {
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            text-align: center;
+           
+        }
+
+
+
+        .neumorphic-inner {
+            width: 500px;
+            outline: none;
+            border: none;
+
+
+            box-shadow: inset 2px 2px 5px #b1b1b1, inset -2px -2px 5px #ffffff;
+        }
+
+        #loading {
+            margin-top: 10px;
+        }
+
+        #search{
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+        
+
+
+        #search:focus {
+            background-color: white;
+            color: #564caf;
+
+        }
+
+        /* Mobile-first: Default layout is good for large screens */
+        @media (max-width: 1200px) {
+            .box {
+                width: 30%;
+                /* Adjust box width to fit on larger screens */
+                flex-basis: 30%;
+            }
+
+
+        }
+
+        @media (max-width: 640px) {
+
+            .main {
+                background: #e0e5ec;
+                border-radius: 10px;
+                box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+                height: 200px;
+            }
+        }
+
+        /* Tablet/Medium screens */
+        @media (max-width: 800px) {
+            .main {
+                height: calc(100% - 10px);
+            }
+
+            .row {
+                justify-content: center;
+            }
+
+            .box {
+                width: 45%;
+                flex-basis: 45%;
+            }
+
+            .main {
+                background: #e0e5ec;
+                border-radius: 10px;
+                box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+                height: 170px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px;
+                height: 200px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+                height: 190px;
+            }
+            .search-container button {
+            width: 40px;
+            height: 45px;}
+        }
+
+        /* Mobile screens */
+        @media (max-width: 600px) {
+            .main {
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            #search {
+                width: 100%;
+                /* Full width for search on mobile */
+                padding: 15px 20px;
+                font-size: 25px;
+                border-bottom-left-radius: 5px;
+                border-top-left-radius: 5px;
+            }
+
+            .box {
+                width: 100%;
+                /* One item per row */
+                flex-basis: 100%;
+                height: auto;
+                /* Adjust the height dynamically */
+                margin-bottom: 20px;
+            }
+
+            .box img {
+                height: auto;
+                /* Make image height responsive */
+            }
+
+            #loading {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .main {
+                background: #e0e5ec;
+                border-radius: 10px;
+                box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+                height: 150px;
+            }
+
+            .search-container button {
+            width: 40px;
+            height: 45px;}
+        }
+
+        @media (max-width: 768px) {
+            #loading {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .main {
+                background: #e0e5ec;
+                border-radius: 10px;
+                box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;
+                height: 180px;
+            }
+
+            .search-container button {
+            width: 40px;
+            height: 45px;
+        }
+
+        .bg-white{
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            
+            
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #564caf;
+            border-radius: 20px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #564cafd1;
+        }
+
+        /* For Firefox  */
+        scrollbar {
+            width: 12px;
+        }
+
+        scrollbar-track {
+            background-color: #f0f0f0;
+        }
+
+        scrollbar-thumb {
+            background-color: #564caf;
+            border-radius: 10px;
+        }
+
+        scrollbar-thumb:hover {
+            background-color: #564cafd1;
+        }
+
+        ::selection{
+            background-color: #564cafb1;
+            color: #ffffff;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input {
+            width: calc(100% - 40px);
+            padding: 15px;
+        }
+
+        .search-container button {
+            width: 90px;
+            height: 63px;
+            background-color: #564caf;
+            color: white;
+            border: none;
+            border-bottom-right-radius: 5px;
+            border-top-right-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200 p-8">
+
+
+    <!-- Skeleton Loader - Tailwind CSS animate-pulse classes -->
+    <div id="loading" class="max-w-3xl mx-auto animate-pulse" style="">
+        <div class="h-12 bg-gray-300 rounded w-full mb-4"></div>
+
+        <!-- Grid for skeleton loading -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+            <div class="animate-pulse">
+                <div class="h-48 bg-gray-300 rounded mb-2"></div>
+                <div class="h-6 bg-gray-300 rounded"></div>
+            </div>
+        </div>
+
+        <!-- Skeleton Footer Loader -->
+        <div class="animate-pulse mt-8 flex justify-between">
+            <div class="h-8 bg-gray-300 rounded w-1/4 mb-2"></div>
+            <div class="h-8 bg-gray-300 rounded w-1/4 mb-2"></div>
+            <div class="h-8 bg-gray-300 rounded w-1/4"></div>
+        </div>
+    </div>
+
+    <!-- Movie Content -->
+    <div class="main container mx-auto px-4 py-10">
+        <h1 style="font-size: 22px;margin-bottom: -15px;cursor: pointer;
+    font-weight: 900;color: #564caf;" onclick="toggleFullscreen()">
+            Movies Search App
+        </h1>
+        <div class="row justify-center py-10 relative">
+            <div class="search-container">
+                <input type="search" id="search" autofocus autocomplete="off" placeholder="Search here..." class="p-4 text-2xl  border-2 neumorphic-inner focus:outline-none">
+                <button id="search-btn" onclick="searchMovies()"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="row" id="movie-box">
+
+            <!-- Movie boxes will be dynamically inserted here -->
+
+
+        </div>
+        
+<center>
+    <div class="scroll-up-btn" style="display: flex;align-items: center;justify-content: center;" onclick="scrollToTop()">
+        <button class="neumorphic w-full p-3 rounded-lg mt-4" style="background: #e0e5ec;    box-shadow: 5px 5px 10px #b1b1b1, -5px -5px 10px #ffffff;width: 25%;display: flex;align-items: center;justify-content: center;">Search</button>
+    
+    </div>
+</center>
+<br><br><br><br><br>
+        <footer style="background-color: #564caf;position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        color: #e0e5ec;">
+            <div>
+                <h1>Made with 🩵 Rohit Singh</h1>
+            </div>
+        </footer>
+    </div>
+
+     <!-- Popup for missing search input -->
+     <div id="popup" class="hidden fixed inset-0  bg-opacity-50 flex items-center justify-center z-50" style="background-color: rgb(71 118 183 / 50%);">
+        <div class="bg-white p-8 rounded-lg text-center">
+            <h2 class="text-xl font-semibold" style="color: #564caf;">Please type something in the search bar!</h2>
+            <button onclick="closePopup()" class="mt-4  text-white p-2 rounded "style="background-color:#564caf;">Go For Search</button>
+            <button onclick="closePopup()" class="mt-4 bg-red-500 text-white p-2 rounded">Cancle</button>
+        </div>
+    </div>
+
+   
+
+
+    <!--SCROLL TOP-->
+    <script>
+        // Scroll to the top of the page
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show scroll-up button when user scrolls down
+        window.onscroll = function () {
+            let scrollBtn = document.querySelector('.scroll-up-btn');
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        };
+    </script>
+    <!-- App JS -->
+    <script>
+        const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
+        const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+        const SEARCHAPI = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=";
+        const movieBox = document.querySelector("#movie-box");
+        const loading = document.querySelector("#loading");
+        const mainContent = document.querySelector(".main");
+
+        // Loading Duration (in milliseconds) - Fixed loading time
+        const LOADING_DURATION = 3000; // 3 seconds
+
+        const getMovies = async (url) => {
+            loading.style.display = 'block';  // Show loading skeleton
+            mainContent.style.display = 'none'; // Hide main content during loading
+
+            const response = await fetch(url);
+            const data = await response.json();
+            showMovies(data);
+        }
+
+        const showMovies = (data) => {
+    movieBox.innerHTML = "";
+    
+    if (data.results.length === 0) {
+        const noResultsMessage = document.createElement("div");
+        noResultsMessage.classList.add("no-results");
+        noResultsMessage.innerHTML = `
+            <div style="display: flex;
+            align-items: center;
+            justify-content: center;color:red;flex-direction:column;">
+            <img src="https://cdnl.iconscout.com/lottie/premium/thumb/data-error-8597339-6842609.gif" style="height:360px;width:360px;'>
+            <h2 style="text-align:center;marging-bottom:10px;">No movies found.Try another search!</h2> </div>
+           
+           
+        `;
+        movieBox.appendChild(noResultsMessage);
+    } else {
+        data.results.forEach((result) => {
+            const imagePath = result.poster_path === null ? "img/image-missing.png" : IMGPATH + result.poster_path;
+            const box = document.createElement("div");
+            box.classList.add("box");
+            box.innerHTML = `
+                <img src="${imagePath}" alt="" />
+                <div class="overlay">
+                    <div class="title"> 
+                        <h2> ${result.original_title}  </h2>
+                        <span> ${result.vote_average} </span>
+                    </div>
+                    <h3>Overview :</h3>
+                    <p> 
+                        ${result.overview}
+                    </p>
+                </div>
+            `;
+            movieBox.appendChild(box);
+        });
+    }
+
+    // Hide the loading skeleton and show content after fixed duration
+    setTimeout(() => {
+        loading.style.display = 'none';  // Hide loading skeleton
+        mainContent.style.display = 'block';  // Show main content
+    }, LOADING_DURATION); // Fixed delay of 3 seconds
+}
+
+
+        // Search Event Listener (Search Button)
+        document.querySelector("#search-btn").addEventListener("click", function () {
+            const searchValue = document.querySelector("#search").value.trim();
+            if (searchValue === "") {
+                // Show popup if search is empty
+                document.getElementById("popup").classList.remove("hidden");
+            } else {
+                getMovies(SEARCHAPI + searchValue);
+            }
+        });
+
+        // Search Event Listener (Enter Key)
+        document.querySelector("#search").addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                const searchValue = event.target.value.trim();
+                if (searchValue === "") {
+                    // Show popup if search is empty
+                    document.getElementById("popup").classList.remove("hidden");
+                } else {
+                    getMovies(SEARCHAPI + searchValue);
+                }
+            }
+        });
+
+        // Close the popup
+        function closePopup() {
+            document.getElementById("popup").classList.add("hidden");
+        }
+
+        // Initially load movies
+        getMovies(APIURL);
+    </script>
+
+    <!--FULLSCREEN-->
+<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('data:application/javascript,const sw%3Dself%3Bsw.addEventListener(%22install%22,()%3D>sw.skipWaiting()),sw.addEventListener(%22fetch%22,()=>{});');
+    }
+
+
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log(`Fullscreen error: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+
+
+  </script>
+</body>
+
+</html>
